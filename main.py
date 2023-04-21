@@ -1,34 +1,31 @@
 import tkinter as tk
 from tkinter import ttk
 
+from serial.tools import list_ports
+import serial
+
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
-import serial
-from serial.tools import list_ports
 
 
-# TESTING USB COMMUNICATION
+ports = list_ports.comports()
+serial_object = serial.Serial()
+all_ports_str = []
+element_to_combox = ''
+# Adding COM-ports names to the list
+for element in ports:
+    element_str = str(element)
 
-# serial_object = serial.Serial()
-#
-# ports = list_ports.comports()
-# list_of_ports = []
-#
-# for single_port in ports:
-#     list_of_ports.append(str(single_port))
-#     print(str(single_port))
+    position = 0
+    while position <= len(element_str)+1:
+        if element_str[position] == ' ':
+            print(element_to_combox)
+            break
+        element_to_combox = element_to_combox + element_str[position]
+        position = position+1
 
-# serial_object.baudrate = 9600
-# serial_object.port = "COM5"
-# serial_object.open()
-#
-# serial_object.write('gf')
-#
-# while True:
-#     if serial_object.in_waiting:
-#         info = serial_object.readline()
-#         print(info.decode('utf'))
+    all_ports_str.append(element_to_combox)
 
 
 def choose_pt():
@@ -52,7 +49,8 @@ photo = tk.PhotoImage(file='setting.png')
 window.iconphoto(True, photo)
 
 tk.Label(window, text="Port").grid(row=0, column=0, pady=10)
-ttk.Combobox().grid(row=0, column=1)
+
+ttk.Combobox(window, values=all_ports_str).grid(row=0, column=1)
 
 # FOR POTENTIOMETER 1
 tk.Label(window, text="Potentiometer №1").grid(row=1, column=0)
