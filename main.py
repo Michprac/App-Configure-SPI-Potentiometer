@@ -7,8 +7,6 @@ import serial
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
-
-
 ports = list_ports.comports()
 serial_object = serial.Serial()
 all_ports_str = []
@@ -18,12 +16,12 @@ for element in ports:
     element_str = str(element)
 
     position = 0
-    while position <= len(element_str)+1:
+    while position <= len(element_str) + 1:
         if element_str[position] == ' ':
             print(element_to_combox)
             break
         element_to_combox = element_to_combox + element_str[position]
-        position = position+1
+        position = position + 1
 
     all_ports_str.append(element_to_combox)
 
@@ -54,13 +52,19 @@ ttk.Combobox(window, values=all_ports_str).grid(row=0, column=1)
 
 # FOR POTENTIOMETER 1
 tk.Label(window, text="Potentiometer №1").grid(row=1, column=0)
-tk.Checkbutton(window, text='Activate').grid(row=2, column=0)
+
+pt1_active = tk.IntVar()
+pt1_active.set(0)
+tk.Checkbutton(window, text='Activate',
+               variable=pt1_active,
+               offvalue=0,
+               onvalue=1).grid(row=2, column=0)
+
 tk.Label(window, text="Value [Ω]").grid(row=2, column=1, padx=10)
 ttk.Combobox().grid(row=2, column=2)
 ttk.Entry().grid(row=2, column=3, padx=10)
 tk.Scale(window, orient=tk.HORIZONTAL).grid(row=2, column=4, ipady=10)
-tk.Button(window, text="Send").grid(row=2, column=5, padx= 10)
-
+tk.Button(window, text="Send").grid(row=2, column=5, padx=10)
 
 abc = '0'
 tk.Label(window, text="Actual Value: ").grid(row=2, column=6, padx=10)
@@ -69,18 +73,24 @@ val_1.grid(row=2, column=7)
 
 # FOR POTENTIOMETER 2
 tk.Label(window, text="Potentiometer №2").grid(row=3, column=0)
-tk.Checkbutton(window, text='Activate').grid(row=4, column=0)
+
+pt2_active = tk.IntVar()
+pt2_active.set(0)
+tk.Checkbutton(window, text='Activate',
+               variable=pt2_active,
+               offvalue=0,
+               onvalue=1).grid(row=4, column=0)
+
 tk.Label(window, text="Value [Ω]").grid(row=4, column=1, padx=10)
 ttk.Combobox().grid(row=4, column=2)
 ttk.Entry().grid(row=4, column=3, padx=10)
 tk.Scale(window, orient=tk.HORIZONTAL).grid(row=4, column=4, ipady=10)
-tk.Button(window, text="Send").grid(row=4, column=5, padx= 10)
+tk.Button(window, text="Send").grid(row=4, column=5, padx=10)
 
 abc = '0'
 tk.Label(window, text="Actual Value: ").grid(row=4, column=6, padx=10)
 val_1 = tk.Label(window, text=abc)
 val_1.grid(row=4, column=7)
-
 
 #
 # First_pt_1 = tk.Radiobutton(window, text='Activate', variable=Radio_pt, value=1, command=choose_pt)
