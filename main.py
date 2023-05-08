@@ -69,6 +69,9 @@ actual_value_number_2 = list(range(1,11))
 #Creating a plot of previous values
 def create_plot1():
 
+    print(previous_values_pt_1)
+    print(actual_value_number_1)
+
     fig = plt.figure(figsize=(3,3), dpi=90)
     plot1 = fig.add_subplot(1,1,1)
     plot1.set_ylabel('Value of the potentiometer 1')
@@ -76,12 +79,17 @@ def create_plot1():
     plot1.set_title('Graph for potentiometer 1')
     plot1.plot(actual_value_number_1, previous_values_pt_1, marker='o')
 
+
     plot_on_window = FigureCanvasTkAgg(fig, window)
     plot_on_window.draw()
     plot_on_window.get_tk_widget().grid(row=5, column=0, columnspan=8, sticky='NWES', pady=5, ipady=50, padx=20)
 
 
 def create_plot2():
+
+    print(previous_values_pt_2)
+    print(actual_value_number_2)
+
 
     global fig, axis
 
@@ -252,7 +260,7 @@ def send_value_1():
         showerror(title="Error", message="Write a NUMBER, not string")
         return
 
-    global previous_values_pt_1
+    global previous_values_pt_1, actual_value_number_1
 
 
 
@@ -263,7 +271,10 @@ def send_value_1():
 
 
     previous_values_pt_1 = previous_values_pt_1[1:]
-    previous_values_pt_1.append(setvalue1.get())
+    previous_values_pt_1.append(int(setvalue1.get()))
+
+    actual_value_number_1 = actual_value_number_1[1:]
+    actual_value_number_1.append(actual_value_number_1[-1]+1)
 
     create_plot1()
 
@@ -272,12 +283,12 @@ def send_value_1():
 def send_value_2(list1):
 
     try:
-        int(setvalue1.get())
+        int(setvalue2.get())
     except ValueError:
         showerror(title="Error", message="Write a NUMBER, not string")
         return
 
-    global previous_values_pt_2
+    global previous_values_pt_2, actual_value_number_2
 
 
     # configure_byte = 0b00010010
@@ -286,7 +297,10 @@ def send_value_2(list1):
     # serial_object.write(text_to_send)
 
     previous_values_pt_2 = previous_values_pt_2[1:]
-    previous_values_pt_2.append(setvalue2.get())
+    previous_values_pt_2.append(int(setvalue2.get()))
+
+    actual_value_number_2 = actual_value_number_2[1:]
+    actual_value_number_2.append(actual_value_number_2[-1]+1)
 
     create_plot2()
 
