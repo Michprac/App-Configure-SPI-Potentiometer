@@ -106,6 +106,9 @@ def set_values1(event):
 
     val_1['text'] = str(newval) + '[Ω]'
 
+def set_values_entry_1(event):
+    print("Hello")
+
 
 def set_values2(event):
     if box2.get() == 'Choose value':
@@ -158,9 +161,11 @@ box1.bind("<<ComboboxSelected>>", set_values1)
 box1.current(0)
 box1.grid(row=2, column=2)
 
-entry1 = ttk.Entry()
+entry1 = ttk.Entry(window)
+entry1.bind("<Return>", set_values_entry_1)
 entry1.grid(row=2, column=3, padx=10)
 entry1.config(state="disabled")
+
 
 scale1_widg = tk.Scale(window, orient=tk.HORIZONTAL, variable=scale1)
 scale1_widg.grid(row=2, column=4, ipady=10)
