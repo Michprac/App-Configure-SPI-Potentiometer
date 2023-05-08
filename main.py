@@ -37,8 +37,9 @@ d_x = 500
 d_y = 20
 Radio_pt = tk.IntVar()  # variable for the radiobutton choosing
 setvalue1 = tk.StringVar()  # actual value for the potentiometer 1
-setvalue2 = tk.StringVar()  # actual value for the potentiometer 2
 scale1 = tk.IntVar()
+
+setvalue2 = tk.StringVar()  # actual value for the potentiometer 2
 scale2 = tk.IntVar()
 
 pt1_active = tk.IntVar()
@@ -49,7 +50,6 @@ ValuesForPotentiometer = {'Choose value': 'Choose value',
                           '30 000': 30000,
                           '40 000': 40000,
                           '50 000': 50000}
-
 
 
 def unlock_widgets1():
@@ -71,6 +71,7 @@ def unlock_widgets1():
         actual_val_1.config(state="disabled")
         val_1.config(state="disabled")
 
+
 def unlock_widgets2():
     if int(pt2_active.get()):
         box2.config(state="readonly")
@@ -91,7 +92,7 @@ def unlock_widgets2():
         val_2.config(state="disabled")
 
 
-def set_values1(event):
+def set_values_box_1(event):
     if box1.get() == 'Choose value':
         newval = '0'
     else:
@@ -102,15 +103,11 @@ def set_values1(event):
     entry1.delete(0, tk.END)
     entry1.insert(0, newval)
 
-    scale1.set(int(newval) / max(list(ValuesForPotentiometer.values())[1:]) * 100)
+    scale1.set(round(int(newval) / max(list(ValuesForPotentiometer.values())[1:]) * 100))
 
     val_1['text'] = str(newval) + '[Ω]'
 
-def set_values_entry_1(event):
-    print("Hello")
-
-
-def set_values2(event):
+def set_values_box_2(event):
     if box2.get() == 'Choose value':
         newval2 = '0'
     else:
@@ -121,9 +118,80 @@ def set_values2(event):
     entry2.delete(0, tk.END)
     entry2.insert(0, newval2)
 
-    scale2.set(int(newval2) / max(list(ValuesForPotentiometer.values())[1:]) * 100)
+    scale2.set(round(int(newval2) / max(list(ValuesForPotentiometer.values())[1:]) * 100))
 
     val_2['text'] = str(newval2) + '[Ω]'
+
+
+def set_values_entry_1(event):
+    try:
+        newval = int(entry1.get())
+    except ValueError:
+        entry1.delete(0, tk.END)
+        entry1.insert(0, 'Write number')
+        return
+
+    if newval >= 0 and newval <= 50000:
+        setvalue1.set(newval)
+    else:
+        return
+
+    box1.set(list(ValuesForPotentiometer.keys())[0])
+
+    scale1.set(round(int(newval) / max(list(ValuesForPotentiometer.values())[1:]) * 100))
+
+    val_1['text'] = str(newval) + '[Ω]'
+
+
+def set_values_entry_2(event):
+    try:
+        newval = int(entry2.get())
+    except ValueError:
+        entry2.delete(0, tk.END)
+        entry2.insert(0, 'Write number')
+        return
+
+    if newval >= 0 and newval <= 50000:
+        setvalue2.set(newval)
+    else:
+        return
+
+    box2.set(list(ValuesForPotentiometer.keys())[0])
+
+    scale2.set(round(int(newval) / max(list(ValuesForPotentiometer.values())[1:]) * 100))
+
+    val_2['text'] = str(newval) + '[Ω]'
+
+def set_values_scale_1(event):
+
+    newval = int(round(scale1.get() / 100 * max(list(ValuesForPotentiometer.values())[1:])))
+    print(newval)
+    setvalue1.set(newval)
+
+    box1.set(list(ValuesForPotentiometer.keys())[0])
+
+    entry1.delete(0, tk.END)
+    entry1.insert(0, newval)
+
+    val_1['text'] = str(newval) + '[Ω]'
+
+
+
+def set_values_scale_2(event):
+
+    newval = int(round(scale2.get() / 100 * max(list(ValuesForPotentiometer.values())[1:])))
+    print(newval)
+    setvalue2.set(newval)
+
+    box2.set(list(ValuesForPotentiometer.keys())[0])
+
+    entry2.delete(0, tk.END)
+    entry2.insert(0, newval)
+
+    val_2['text'] = str(newval) + '[Ω]'
+
+
+
 
 
 window.title('Configuration of the SPI Potentiometer')
@@ -157,19 +225,20 @@ label1.config(state="disabled")
 box1 = ttk.Combobox(window, state="readonly",
                     values=list(ValuesForPotentiometer.keys()))
 box1.configure(state="disabled")
-box1.bind("<<ComboboxSelected>>", set_values1)
+box1.bind("<<ComboboxSelected>>", set_values_box_1)
 box1.current(0)
 box1.grid(row=2, column=2)
 
 entry1 = ttk.Entry(window)
+entry1.insert(0, 'Set value')
+entry1.config(state="disabled")
 entry1.bind("<Return>", set_values_entry_1)
 entry1.grid(row=2, column=3, padx=10)
-entry1.config(state="disabled")
-
 
 scale1_widg = tk.Scale(window, orient=tk.HORIZONTAL, variable=scale1)
 scale1_widg.grid(row=2, column=4, ipady=10)
 scale1_widg.config(state='disabled')
+scale1_widg.bind("<ButtonRelease-1>", set_values_scale_1)
 
 send_btn1 = tk.Button(window, text="Send")
 send_btn1.grid(row=2, column=5, padx=10)
@@ -200,18 +269,21 @@ label2.grid(row=4, column=1, padx=10)
 label2.config(state="disabled")
 
 box2 = ttk.Combobox(window, values=list(ValuesForPotentiometer.keys()), )
-box2.bind("<<ComboboxSelected>>", set_values2)
+box2.bind("<<ComboboxSelected>>", set_values_box_2)
 box2.current(0)
 box2.grid(row=4, column=2)
 box2.config(state="disabled")
 
-entry2 = ttk.Entry()
-entry2.grid(row=4, column=3, padx=10)
+entry2 = ttk.Entry(window)
+entry2.insert(0, 'Set value')
 entry2.config(state="disabled")
+entry2.bind("<Return>", set_values_entry_2)
+entry2.grid(row=4, column=3, padx=10)
 
 scale2_widg = tk.Scale(window, orient=tk.HORIZONTAL, variable=scale2)
 scale2_widg.grid(row=4, column=4, ipady=10)
 scale2_widg.config(state="disabled")
+scale2_widg.bind("<ButtonRelease-1>", set_values_scale_2)
 
 send_btn2 = tk.Button(window, text="Send")
 send_btn2.grid(row=4, column=5, padx=10)
