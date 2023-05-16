@@ -68,7 +68,7 @@ void loop() {
         SPI.transfer(0x12);
         SPI.transfer(message_byte);
       case 'c':
-        SPI.transfer(0x12);
+        SPI.transfer(0x13);
         SPI.transfer(message_byte);
     }
 
