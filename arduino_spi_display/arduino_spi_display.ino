@@ -3,25 +3,75 @@
 // SCK 2 -> CLK arduino 13
 // CS 1 -> CS arduino 10
 
+
 #include <SPI.h>
 
-void setup() {
-  // put your setup code here, to run once:
+byte message_byte;
+int configure_byte;
+char element[4];
+char operation;
+int i=0;
+String a;
 
+
+
+void setup() {
   SPI.begin();
   Serial.begin(9600);
-
-  SPI.transfer(0x12);
-  SPI.transfer(0xFF);
-
-
+  pinMode(10, OUTPUT);
+  digitalWrite(10, LOW);
 
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  
 
-  
+
+  while (Serial.available() > 0){
+
+    a =  Serial.readString();
+
+    if (a[0] == '1' && a[1] == '1'){
+      operation = 'a';
+    }
+
+    if (a[0] == '1' && a[1] == '2'){
+      operation = 'b';
+    }
+
+    if (a[0] == '1' && a[1] == '3'){
+      operation = 'c';
+    }
+
+
+    if (a[0] == 'A'){
+      Serial.println(a.length());
+      for (int k = 1; k < a.length()+1; k++) {
+        element[k-1] = a[k];
+      }
+      message_byte = (byte)atoi(element);
+      element[0]='\0';
+    }
+
+    if (a[0] == 'B'){
+      for (int k = 1; k < a.length()+1; k++) {
+        element[k-1] = a[k];
+      }
+      message_byte = (byte)atoi(element);
+      element[0]='\0';
+    }
+
+    switch (operation) {
+      case 'a':
+        SPI.transfer(0x11);
+        SPI.transfer(message_byte);
+      case 'b':
+        SPI.transfer(0x12);
+        SPI.transfer(message_byte);
+      case 'c':
+        SPI.transfer(0x12);
+        SPI.transfer(message_byte);
+    }
+
+  }
 
 }
