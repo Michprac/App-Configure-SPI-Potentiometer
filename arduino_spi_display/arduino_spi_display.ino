@@ -72,17 +72,21 @@ void loop() {
       case 'a':
         SPI.transfer(0x00);
         SPI.transfer(message_byte);
+        break;
       case 'b':
         SPI.transfer(0x12);
         SPI.transfer(message_byte);
+        break;
       case 'c':
         SPI.transfer(0x00);
         SPI.transfer(message_byte);
+
 
         delay(500);
 
         SPI.transfer(0x12);
         SPI.transfer(message_byte);
+        break;
     }
 
   }
