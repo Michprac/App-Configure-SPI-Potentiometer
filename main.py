@@ -34,8 +34,6 @@ for element in ports:
 
 window = tk.Tk()
 
-window.iconphoto(False, tk.PhotoImage(file='setting.png'))
-
 
 height = 980
 width = 912
@@ -82,8 +80,6 @@ def configure_serial_object(event):
 
 # Creating a plot of previous values
 def create_plot1():
-    print(previous_values_pt_1)
-    print(actual_value_number_1)
 
     fig = plt.figure(figsize=(3, 3), dpi=70)
     plot1 = fig.add_subplot(1, 1, 1)
@@ -98,8 +94,6 @@ def create_plot1():
 
 
 def create_plot2():
-    print(previous_values_pt_2)
-    print(actual_value_number_2)
 
     global fig, axis
 
@@ -348,11 +342,10 @@ def send_value_1():
 
     global previous_values_pt_1, actual_value_number_1
 
-    configure_byte = str(11)
+    configure_byte = '00'
     value_of_pt_hex_1 = 'A' + str(int(setvalue1.get()) * 255 // max(list(ValuesForPotentiometer.values())[1:]))
 
     print(configure_byte)
-
     print(value_of_pt_hex_1)
     try:
         serial_object.write(configure_byte.encode('utf-8'))
@@ -456,8 +449,6 @@ window.geometry(f"{height}x{width}+{d_x}+{d_y}")
 window.minsize(width, height)
 window.maxsize(width, height)
 
-photo = tk.PhotoImage(file='setting.png')
-window.iconphoto(True, photo)
 
 tk.Label(window, text="Port").grid(row=0, column=0, pady=10)
 

@@ -30,7 +30,7 @@ void loop() {
 
     a =  Serial.readString();
 
-    if (a[0] == '1' && a[1] == '1'){
+    if (a[0] == '0' && a[1] == '0'){
       operation = 'a';
     }
 
@@ -60,15 +60,28 @@ void loop() {
       element[0]='\0';
     }
 
+    if (a[0] == 'C'){
+      for (int k = 1; k < a.length()+1; k++) {
+        element[k-1] = a[k];
+      }
+      message_byte = (byte)atoi(element);
+      element[0]='\0';
+    }
+
     switch (operation) {
       case 'a':
-        SPI.transfer(0x11);
+        SPI.transfer(0x00);
         SPI.transfer(message_byte);
       case 'b':
         SPI.transfer(0x12);
         SPI.transfer(message_byte);
       case 'c':
-        SPI.transfer(0x13);
+        SPI.transfer(0x00);
+        SPI.transfer(message_byte);
+
+        delay(500);
+
+        SPI.transfer(0x12);
         SPI.transfer(message_byte);
     }
 
