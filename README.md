@@ -4,7 +4,7 @@ The aim of this project was creating an application with which you can control a
 This solution helps to change the parameter of an electronic element remotely.
 
 <p align="center">
-  <img src ="View_of_the_app.png" width="200" >
+  <img src ="View_of_the_app.png" width="500" >
 </p>
 
 To start working with this app you need to choose COM-port and element control option (first potentiometer, second potentiometer, two potentiometers at once). 
