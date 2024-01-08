@@ -11,3 +11,7 @@ To start working with this app you need to choose COM-port and element control o
 Also you need to upload the program (from the project directory) to the Arduino microcontroller.
 
 Of course, you also need to make the appropriate wire connections, connect the appropriate pins of the integrated circuit with the pins of the Arduino microcontroller.
+
+# Installation
+
+To start using this app, the user can simply use the installer which is called main.exe. This file allows you to use the application without routine installations of additional environments and other things.
